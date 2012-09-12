@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en"
+      i18n:domain="plone">
+
+<body>
+         <tal:foldercontent define="folderContents python:('estudiantes-docentes','ciudadano','instituciones','proveedores','ong','profesionales','empresa');
+                                    contentFilter contentFilter|request/contentFilter|nothing;
+                                    existing python:here.getFolderContents(contentFilter =
+                                             {'portal_type' : ['Topic']}, batch = True);
+                                    ">
+           <div id="ensima" tal:condition="folderContents">
+                 <div id="sub" tal:repeat="element folderContents">
+                   <tal:block define="item python:getattr(context,element);
+                                      item_url item/getURL|item/absolute_url;
+                                      item_title_or_id item/pretty_title_or_id;
+                                    ">
+                     <h3 tal:content="item_title_or_id">Titulo or Id</h3>
+                     <tal:colection_item define="item_colection item/queryCatalog">
+                        <tal:block repeat="object item_colection">
+                            <a href="#" id="enlace" tal:define="title object/pretty_title_or_id;
+                                                                 url object/getURL|object/absolute_url"
+                                                    tal:content="title"
+                                                    tal:attributes="href url;
+                                                                    id string:enlace;
+                                                                    "/>
+                        </tal:block>
+                     </tal:colection_item>
+                   </tal:block>
+                 </div>
+           </div>
+        </tal:foldercontent>
+</body>
+</html>

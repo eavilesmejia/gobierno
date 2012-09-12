@@ -1,0 +1,353 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<head>
+  <title>
+  </title>
+</head>
+<body>
+   <div metal:fill-slot="main">
+   <metal:main-macro define-macro="main">
+       <metal:listingmacro define-macro="listing">
+
+          <tal:contentNews define="items_news python:context.portal_catalog(portal_type='News Item',sort_on='modified',
+                                                                        sort_order='reverse',sort_limit=3)[:3];
+                                   use_view_action site_properties/typesUseViewActionInListings">
+
+                <div class="front" id="first">
+
+               <h1>
+                   <span class="documentFirstHeading"
+                         metal:define-macro="listitem">Ultimas Noticias</span>
+
+               </h1>
+                <tal:news>
+                    <!-- Slideshow HTML -->
+                    <div id="slideshow">
+                      <div id="slidesContainer" >
+                        <div class="slide" tal:repeat="item_colection items_news">
+                          <div class="block_news" tal:define="item_URL item_colection/getURL|item/absolute_url;
+                                                item_title item_colection/pretty_title_or_id;
+                                                item_description item_colection/Description;
+                                                item_type item_colection/portal_type;
+                                                item_modified item_colection/ModificationDate;
+                                                item_created item_colection/CreationDate;
+                                                item_creator item_colection/Creator;
+                                                item_effective item_colection/effective/ISO|item/EffectiveDate|nothing;
+                                                object item_colection/getObject|nothing;
+                                                ">
+                             <a href="#"
+                               tal:attributes="href python:(item_URL+'/view', item_URL)[item_type in use_view_action];">
+                                <img src="" alt=""
+                                     tal:condition="exists:object/image_mini"
+                                             tal:replace="structure python: path('nocall:object/tag')(scale='mini', css_class='tileImage')" />
+                             </a>
+
+                             <h2 class="tileHeadline">
+                                    <a href="#"
+                                       class="summary url"
+                                       tal:attributes="href python:(item_URL+'/view', item_URL)[item_type in use_view_action];"
+                                       tal:content="item_title">
+                                        Item Title
+                                    </a>
+                             </h2>
+                             <div class="effectiveDate">
+                                        <span tal:content="python:toLocalizedTime(item_modified,long_format=1)"> Fecha efectiva</span>
+                             </div>
+
+                             <div class="documentByLine" tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon">
+                                   <tal:name tal:condition="item_creator"
+                                        tal:define="author python:mtool.getMemberInfo(item_creator)">
+                                      <span i18n:translate="label_by_author">
+                                        by
+                                      <a href="#"
+                                         tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${item_creator}"
+                                         tal:content="python:author and author['fullname'] or item_creator"
+                                         tal:omit-tag="not:author"
+                                         i18n:name="author">
+                                        Bob Dabalino
+                                      </a>
+                                      </span>
+                                    </tal:name>
+                                    &mdash;
+                             </div>
+
+                             <p class="tileBody">
+                                    <span tal:omit-tag="" tal:condition="not:item_description">
+                                        &nbsp;
+                                    </span>
+                                    <span class="description" tal:content="item_description">
+                                        description
+                                    </span>
+                             </p>
+
+                             <a href="item_url" tal:attributes="href item_URL">Leer mas...</a>
+
+                         </div>
+                        </div>
+                      </div>
+                    </div>
+            </tal:news>
+          </div>
+        </tal:contentNews>
+
+
+       <tal:collection define="folderContents python:('ultimos-documentos','proximos-eventos');
+                               existing python:context.contentIds();
+                               ">
+           <tal:listing repeat="element folderContents">
+            <tal:centinela condition="python:element in existing">
+               <tal:block define="item python:getattr(context,element);
+                                  use_view_action site_properties/typesUseViewActionInListings;
+                                  item_url item/getURL|item/absolute_url;
+                                  item_title_or_id item/pretty_title_or_id;
+                            ">
+
+                    <div class="front rest">
+
+                       <h1>
+                           <span style="margin: 0;
+                                        padding: 0;
+                                        border: none !important;
+                                        text-decoration: none"
+                                 tal:condition="not: isAnon">
+
+                                 <a href="/view"  tal:define="url python:(item_url+'/criterion_edit_form')" tal:attributes="href url;
+                                                                 ">
+
+                                      <img  src="" alt="" title=""
+                                            tal:attributes="src    string:$portal_url/pencil_icon.gif;
+                                                            alt    python:('editar Criterio ' + item_title_or_id);
+                                                            title  python:('editar Criterio ' +item_title_or_id)
+                                                           " />
+                                 </a>
+                           </span>
+                           <span class="documentFirstHeading"
+                                  tal:content="item_title_or_id"/>
+                       </h1>
+                    
+                     <div class="plain">
+                        <tal:itemscolection tal:define="items_catalog item/queryCatalog">
+                                <tal:objeto repeat="item_colection items_catalog">
+                                    <div tal:define=" item_URL item_colection/getURL|item/absolute_url;
+                                                      item_id item_colection/getId | item_colection/id;
+                                                      item_title item_colection/pretty_title_or_id;
+                                                      item_description item_colection/Description;
+                                                      item_type item_colection/portal_type;
+                                                      item_type_class python: 'contenttype-' + putils.normalizeString(item_type);
+                                                      item_modified item_colection/ModificationDate;
+                                                      item_created item_colection/CreationDate;
+                                                      item_creator item_colection/Creator;
+                                                      item_effective item_colection/effective/ISO|item/EffectiveDate|nothing;
+                                                      item_start item_colection/start/ISO|item/StartDate|nothing;
+                                                      object item_colection/getObject|nothing;
+                                                      item_end item_colection/end/ISO|item/EndDate|nothing;
+                                                    "
+                                            tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
+
+
+                                        <tal:events tal:condition="python: item_type=='Event'"
+                                                    tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                                                                date_current view/Fecha;
+                                                                indice repeat/item_colection/number">
+                                          <div class="portletColumn" tal:condition="python: toLocalizedTime(item_start) >= date_current"
+                                              tal:define="oddrow repeat/item_colection/odd"
+                                              tal:attributes="class python:oddrow and 'portletColumnEven' or 'portletColumnOdd'">
+                                              <a href="#"
+                                                 class="tile"
+                                                 tal:attributes="href item_URL;
+                                                                 title item_description;
+                                                                 alt item_description">
+
+                                                  <img src="icon.png" tal:attributes="src python:(item_url+'/eventmini.png');
+                                                                                     "/>
+
+                                                  <span tal:replace="item_title">
+                                                   Some Event
+                                                  </span>
+
+                                                <div class="documentByLine" tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon">
+                                                   <tal:name tal:condition="item_creator"
+                                                        tal:define="author python:mtool.getMemberInfo(item_creator)">
+                                                      <span i18n:translate="label_by_author">
+                                                        by
+                                                      <a href="#"
+                                                         tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${item_creator}"
+                                                         tal:content="python:author and author['fullname'] or item_creator"
+                                                         tal:omit-tag="not:author"
+                                                         i18n:name="author">
+                                                        Bob Dabalino
+                                                      </a>
+                                                      </span>
+                                                    </tal:name>
+                                                    &mdash;
+                                                    <span tal:replace="python:toLocalizedTime(item_modified,long_format=1)">
+                                                    August 16, 2001 at 23:35:59
+                                                    </span>
+                                               </div>
+                                                  <span class="portletItemDetails">
+                                                      <tal:condition condition="item_colection/location">
+                                                          <tal:location content="item_colection/location">Location</tal:location>, <br />
+                                                      </tal:condition>
+                                                      <tal:date content="python:toLocalizedTime(item_start)"
+                                                                condition="python: toLocalizedTime(item_start,long_format=1)">
+                                                      May 5
+                                                      </tal:date>
+                                                  </span>
+                                              </a>
+                                          </div>
+
+                                          <div class="portletFooter"
+                                               tal:condition="python: indice==4">
+                                              <a href="#"
+                                                 class="tile"
+                                                 tal:attributes="href item_url"
+                                                 i18n:translate="box_upcoming_events">
+                                                      Upcoming events&hellip;
+                                              </a>
+                                              <span class="portletBottomLeft"></span>
+                                              <span class="portletBottomRight"></span>
+                                          </div>
+
+                                      </tal:events>
+
+                                        <tal:documents tal:condition="python: item_type=='File'"
+                                                    tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                                                                indice repeat/item_colection/number">
+                                          <div class="portletColumn"
+                                              tal:define="oddrow repeat/item_colection/odd;
+                                                          plone_view context/@@plone;
+                                                          getIcon nocall:plone_view/getIcon;
+                                                          item_icon python:getIcon(object);"
+                                              tal:attributes="class python:oddrow and 'portletColumnEven' or 'portletColumnOdd'">
+                                              <a href="#"
+                                                 class="tile"
+                                                 tal:attributes="href item_URL;
+                                                                 title item_description;
+                                                                 alt item_description">
+                                                  <img tal:replace="structure item_icon/html_tag" />
+                                                  <span tal:replace="item_title">
+                                                   Some Document
+                                                  </span>
+
+                                                <div class="documentByLine" tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon">
+                                                   <tal:name tal:condition="item_creator"
+                                                        tal:define="author python:mtool.getMemberInfo(item_creator)">
+                                                      <span i18n:translate="label_by_author">
+                                                        by
+                                                      <a href="#"
+                                                         tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${item_creator}"
+                                                         tal:content="python:author and author['fullname'] or item_creator"
+                                                         tal:omit-tag="not:author"
+                                                         i18n:name="author">
+                                                        Bob Dabalino
+                                                      </a>
+                                                      </span>
+                                                    </tal:name>
+                                                    &mdash;
+                                                    <span tal:replace="python:toLocalizedTime(item_modified,long_format=1)">
+                                                    August 16, 2001 at 23:35:59
+                                                    </span>
+                                               </div>
+                                                  <span class="portletItemDetails">
+                                                      <tal:date content="item_modified"/>
+                                                  </span>
+                                              </a>
+                                          </div>
+
+                                          <div class="portletFooter"
+                                               tal:condition="python: indice==4">
+                                              <a href="#"
+                                                 class="tile"
+                                                 tal:attributes="href item_url">
+                                                      Mas...
+                                              </a>
+                                              <span class="portletBottomLeft"></span>
+                                              <span class="portletBottomRight"></span>
+                                          </div>
+                                      </tal:documents>
+
+                                    <tal:others tal:condition="python: item_type!='File' and item_type!='News Item' and item_type!='Event'"
+                                                    tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                                                                indice repeat/item_colection/number">
+                                          <div class="portletColumn"
+                                              tal:define="oddrow repeat/item_colection/odd;
+                                                          plone_view context/@@plone;
+                                                          getIcon nocall:plone_view/getIcon;
+                                                          item_icon python:getIcon(object);"
+                                              tal:attributes="class python:oddrow and 'portletColumnEven' or 'portletColumnOdd'">
+                                              <a href="#"
+                                                 class="tile"
+                                                 tal:attributes="href item_URL;
+                                                                 title item_description;
+                                                                 alt item_description">
+                                                  <img tal:replace="structure item_icon/html_tag" />
+                                                  <span tal:replace="item_title">
+                                                   Some Document
+                                                  </span>
+
+                                                <div class="documentByLine" tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon">
+                                                   <tal:name tal:condition="item_creator"
+                                                        tal:define="author python:mtool.getMemberInfo(item_creator)">
+                                                      <span i18n:translate="label_by_author">
+                                                        by
+                                                      <a href="#"
+                                                         tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${item_creator}"
+                                                         tal:content="python:author and author['fullname'] or item_creator"
+                                                         tal:omit-tag="not:author"
+                                                         i18n:name="author">
+                                                        Bob Dabalino
+                                                      </a>
+                                                      </span>
+                                                    </tal:name>
+                                                    &mdash;
+                                                    
+                                               </div>
+                                                  <span class="portletItemDetails">
+                                                      <tal:date content="python:toLocalizedTime(item_modified,long_format=1)"/>
+                                                  </span>
+                                              </a>
+                                          </div>
+
+                                          <div class="portletFooter"
+                                               tal:condition="python: indice==4">
+                                              <a href="#"
+                                                 class="tile"
+                                                 tal:attributes="href item_url">
+                                                      Mas...
+                                              </a>
+                                              <span class="portletBottomLeft"></span>
+                                              <span class="portletBottomRight"></span>
+                                          </div>
+                                      </tal:others>
+
+                                   </div>
+                                </tal:objeto>
+                        </tal:itemscolection>
+                     </div>
+
+                     <div class="visualClear"><!-- --></div>
+                  </div>
+               </tal:block>
+             </tal:centinela>
+           </tal:listing>
+
+           <metal:empty metal:define-slot="no_items_in_listing">
+               <p class="discreet"
+                  tal:condition="not: folderContents"
+                  i18n:translate="description_no_items_in_folder">
+                   There are currently no items in this folder.
+               </p>
+           </metal:empty>
+
+       </tal:collection>
+      </metal:listingmacro>
+   </metal:main-macro>
+   </div>
+
+</body>
+</html>

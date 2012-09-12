@@ -1,0 +1,78 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="plonetheme.gobierno">
+
+  <!-- 'Skin Gobierno' Zope 3 browser layer -->
+  <interface
+      interface=".interfaces.IThemeSpecific"
+      type="zope.publisher.interfaces.browser.IBrowserSkinType"
+      name="Skin Gobierno"
+      />
+  
+  <!-- Viewlets registration -->
+  <!-- Zope 3 browser resources -->
+
+  <!-- Resource directory for images -->
+  <browser:resourceDirectory
+      name="plonetheme.gobierno.images"
+      directory="images"
+      layer=".interfaces.IThemeSpecific"
+      />
+
+  <!-- Resource directory for stylesheets -->
+  <browser:resourceDirectory
+      name="plonetheme.gobierno.stylesheets"
+      directory="stylesheets"
+      layer=".interfaces.IThemeSpecific"
+      />
+
+  <!--resource directory for javascripts-->
+  <browser:resourceDirectory
+      name="plonetheme.gobierno.javascripts"
+      directory="javascripts"
+      layer=".interfaces.IThemeSpecific"
+      />
+
+
+  <!-- View to the frontpage of site -->
+  <!--browser:viewlet
+     name="plone.abovecontenttitle"
+     for="*"
+     manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+     layer=".interfaces.IThemeSpecific"
+     template="profile.pt"
+     permission="zope.Public"
+     /-->
+
+  <!-- Front Page del Portal -->
+  <browser:page
+      for="*"
+      name="frontpage"
+      template="frontpage.pt"
+      class=".frontpage.frontPageView"
+      layer=".interfaces.IThemeSpecific"
+      permission="zope.Public"
+      />
+
+  <browser:viewlet
+     name="plone.colophon"
+     for="*"
+     manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
+     layer=".interfaces.IThemeSpecific"
+     template="colophon.pt"
+     permission="zope.Public"
+     />
+
+  <!--our viewlet plone.footer customized-->
+  <browser:viewlet
+     name="plone.footer"
+     for="*"
+     manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
+     class=".footer.footerView"
+     layer=".interfaces.IThemeSpecific"
+     template="footer.pt"
+     permission="zope.Public"
+     />
+
+</configure>

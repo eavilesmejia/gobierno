@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en"
+      i18n:domain="plone">
+<head>
+  <title>
+  </title>
+</head>
+<body>
+    <div id="portal-footer" i18n:domain="plone">
+         <tal:profile define="profiles view/profiles
+                                    ">
+           <tal:contenedor   repeat="element profiles">
+            <!--tal:centinela condition="python: element in existing"-->
+                
+             <dl class="profile" tal:define="indice repeat/element/number"
+                              tal:attributes="class python:('profileMore','profile')[indice<6]">
+                   <tal:block define="item python:getattr(context,element);
+                                      item_id item/getId|item/id;
+                                      item_url item/getURL|item/absolute_url;
+                                      item_title_or_id item/pretty_title_or_id">
+                   
+                     <dt tal:content="item_title_or_id"/>
+                     <tal:colection_item define="item_colection item/queryCatalog">
+                        <tal:parts repeat="object item_colection"
+                                   condition="item_colection">
+                            <dd>
+                                <a href="#" tal:define="title object/pretty_title_or_id;
+                                                                    url object/getURL|object/absolute_url"
+                                                        tal:content="title"
+                                                        tal:attributes="href url;
+                                                                        "/>
+                            </dd>
+                            <dd class="more" tal:define="indice repeat/object/number"
+                                tal:condition="python: indice==4">
+                                <a href="#" tal:attributes="href item_url"
+                                            tal:condition="python: indice==4">
+                                    Mas...
+                                </a>
+                            </dd>
+                        </tal:parts>
+                     </tal:colection_item>
+                   </tal:block>
+               </dl>
+              <!--/tal:centinela-->
+            </tal:contenedor>
+        </tal:profile>
+    </div>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<portlets>
+    <portletmanager name="plone.leftcolumn" type="plone.app.portlets.interfaces.ILeftColumn"/>
+    <portletmanager name="plone.rightcolumn" type="plone.app.portlets.interfaces.IRightColumn"/>
+    
+    <portlet title="Login" addview="portlets.Login" description="A portlet which can render a log-in box">
+    <for interface="plone.app.portlets.interfaces.IColumn"/>
+    </portlet>
+    <portlet title="Collection portlet" addview="plone.portlet.collection.Collection" description="A portlet which displays the results of a collection query"/>
+
+    <portlet title="Review list" addview="portlets.Review" description="A portlet which can render a listing on the review queue.">
+    <for interface="plone.app.portlets.interfaces.IColumn"/>
+    <for interface="plone.app.portlets.interfaces.IDashboard"/>
+    </portlet>
+
+    <portlet title="RSS Feed" addview="portlets.rss" description="A portlet which can receive and render an RSS feed.">
+    <for interface="plone.app.portlets.interfaces.IColumn"/>
+    <for interface="plone.app.portlets.interfaces.IDashboard"/>
+    </portlet>
+
+    <portlet title="Classic portlet" addview="portlets.Classic" description="A portlet which can render a classic template-based portlet">
+    <for interface="plone.app.portlets.interfaces.IColumn"/>
+    <for interface="plone.app.portlets.interfaces.IDashboard"/>
+    </portlet>
+
+    <portlet title="Calendar portlet" addview="portlets.Calendar" description="A portlet which can render a calendar.">
+    <for interface="plone.app.portlets.interfaces.IColumn"/>
+    <for interface="plone.app.portlets.interfaces.IDashboard"/>
+    </portlet>
+
+    <portlet title="Search" addview="portlets.Search" description="A portlet which shows a search box.">
+    <for interface="plone.app.portlets.interfaces.IColumn"/>
+    <for interface="plone.app.portlets.interfaces.IDashboard"/>
+    </portlet>
+
+    <portlet title="Recent items" addview="portlets.Recent" description="A portlet which can render a listing of recently changed items.">
+    <for interface="plone.app.portlets.interfaces.IColumn"/>
+    <for interface="plone.app.portlets.interfaces.IDashboard"/>
+    </portlet>
+
+    <portlet title="News" addview="portlets.News" description="A portlet which can render a listing of recent news">
+    <for interface="plone.app.portlets.interfaces.IColumn"/>
+    <for interface="plone.app.portlets.interfaces.IDashboard"/>
+    </portlet>
+    <portlet title="Static text portlet" addview="plone.portlet.static.Static" description="A portlet which can display static HTML text"/>
+
+    <portlet title="Navigation" addview="portlets.Navigation" description="A portlet which can render a navigation tree">
+    <for interface="plone.app.portlets.interfaces.IColumn"/>
+    </portlet>
+
+    <portlet title="Events" addview="portlets.Events" description="A portlet which can render a listing of recent events">
+    <for interface="plone.app.portlets.interfaces.IColumn"/>
+    <for interface="plone.app.portlets.interfaces.IDashboard"/>
+    </portlet>
+    
+    <assignment
+        purge="True"
+        manager="plone.rightcolumn"
+        category="context"
+        key="/"
+        />
+    <assignment
+        purge="True"
+        manager="plone.leftcolumn"
+        category="context"
+        key="/"
+        />
+
+    <assignment
+        type="portlets.Navigation"
+        manager="plone.leftcolumn"
+        category="context"
+        key="/"
+        name="Navegacion"
+        >
+        <property name="topLevel">0</property>
+        <property name="currentFolderOnly">False</property>
+        <property name="name"/>
+        <property name="includeTop">False</property>
+        <property name="bottomLevel">0</property>
+    </assignment>
+
+    <assignment
+        name="Enlaces"
+        category="context"
+        key="/"
+        manager="plone.leftcolumn"
+        type="plone.portlet.static.Static"
+        >
+        <property name="header">Enlaces</property>
+        <property name="more_url"/>
+        <property name="hide">False</property>
+        <property name="footer"/>
+        <property name="text">
+           <![CDATA[
+            <a href="http://www.presidencia.gob.ni" target="_blank">
+                <img title="Enlace a portal de la Presidencia" class="enlaces" src="enlace-presidencia.jpg" alt="Enlace a portal de la Presidencia" />
+                </a>
+            <a href="http://www.asamblea.gob.ni" target="_blank">
+                            <img title="Enlace a portal de la Asamblea" class="enlaces" src="enlace-asamblea.jpg" alt="Enlace a portal de la Asamblea" />
+                            </a>
+            <a href="http://www.csj.gob.ni" target="_blank">
+                            <img title="Enlace a portal del Corte Suprema de Justicia" class="enlaces" src="enlace-csj.jpg" alt="Enlace a portal del Corte Suprema de Justicia" />
+                            </a>
+            <a href="http://www.bcn.gob.ni" target="_blank">
+                            <img title="Enlace a portal del Banco Central" src="enlace-bcn.jpg" alt="Enlace a portal del Banco Central" />
+                            </a>
+            <a href="http://www.cse.gob.ni" target="_blank">
+                            <img title="Enlace a portal del Consejo Supremo Electoral" class="enlaces" src="enlace-cse.jpg" alt="Enlace a portal del Consejo Supremo Electoral" />
+                            </a>
+            <a href="http://www.cancilleria.gob.ni" target="_blank">
+                            <img title="Enlace a portal de la Cancilleria" class="enlaces" src="enlace-minrex.jpg" alt="Enlace a portal de la Cancilleria" />
+                            </a>
+           ]]>
+        </property>
+        <property name="omit_border">True</property>
+    </assignment>
+    <assignment
+        name="Multimedia"
+        category="context"
+        key="/"
+        manager="plone.rightcolumn"
+        type="plone.portlet.static.Static"
+        >
+        <property name="header">Multimedia</property>
+        <property name="more_url"/>
+        <property name="hide">False</property>
+        <property name="footer"/>
+        <property name="text">
+           <![CDATA[
+           <div id="multimedia">
+                <a href="/portal/galeria" target="_self">
+                               <img src="image_galery.png" alt="Galeria de Imagenes" title="Galeria de Imagenes" />
+                                </a>
+                <h3>Galería de Fotos</h3>
+                <a href="/portal/video" target="_self">
+                             <img src="image_videoTeca.png" alt="VideoTeca" title="VideoTeca"/>
+                                </a>
+                <h3>VideoTeca</h3>
+            </div>
+           ]]>
+        </property>
+        <property name="omit_border">True</property>
+    </assignment>
+    <!--assignment
+        name="ultimas-noticias"
+        category="context"
+        key="/"
+        manager="plone.rightcolumn"
+        type="plone.portlet.collection.Collection"
+        >
+        <property name="show_more">True</property>
+        <property name="header">Ultimos Documentos</property>
+        <property name="limit">4</property>
+        <property name="target_collection">/ultimas-noticias</property>
+        <property name="random">False</property>
+        <property name="show_dates">True</property>
+    </assignment-->
+    <!--assignment
+        name="ultimos-documentos"
+        category="context" 
+        key="/ultimas-noticias"
+        manager="ContentWellPortlets.BelowPortletManager1"
+        type="plone.portlet.collection.Collection"
+        >
+        <property name="show_more">True</property>
+        <property name="header">Ultimos Documentos</property>
+        <property name="limit">4</property>
+        <property name="target_collection">/ultimas-noticias</property>
+        <property name="random">False</property>
+        <property name="show_dates">True</property>
+    </assignment>
+    <assignment name="events"
+        category="context"
+        key="/ultimas-noticias"
+        manager="ContentWellPortlets.BelowPortletManager2" type="portlets.Events">
+        <property name="count">4</property>
+        <property name="state">published</property>
+    </assignment-->
+</portlets>

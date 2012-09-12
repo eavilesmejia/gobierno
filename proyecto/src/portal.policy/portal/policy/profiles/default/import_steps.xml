@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step id="portal.policy.various"
+               version="20100307-01"
+               handler="portal.policy.setuphandlers.importVarious"
+               title="Estructura de carpetas: miscellaneous import steps">
+    <dependency step="rolemap" />
+    Various import steps that are not handled by GS import/export
+    handlers.
+  </import-step>
+</import-steps>
